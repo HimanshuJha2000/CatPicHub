@@ -3,10 +3,18 @@ package main
 import (
 	"flag"
 	"github.com/DevtronLabs/CatPicHub/internal/bootstrap"
+	"github.com/DevtronLabs/CatPicHub/internal/constants"
 	"os"
 	"os/signal"
 	"syscall"
 )
+
+var env *string
+
+// fetch all the cli inputs options provided.
+func init() {
+	env = flag.String(constants.Env, constants.Development, "Application env : prod/dev")
+}
 
 func main() {
 	flag.Parse()
@@ -21,7 +29,7 @@ func main() {
 		close(done)
 	}()
 
-	bootstrap.BaseInitAPI()
+	bootstrap.BaseInitAPI(*env)
 
 	<-done
 }
