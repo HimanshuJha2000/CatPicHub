@@ -41,7 +41,6 @@ func (svc Service) CreateCatPicService(file *multipart.FileHeader) (int, map[str
 		picFileType = "png"
 	}
 
-	// Save to database
 	cpo := model.CatPics{
 		ID:             utils.GenerateUniqueID(),
 		CatPicFileName: file.Filename,
@@ -49,6 +48,7 @@ func (svc Service) CreateCatPicService(file *multipart.FileHeader) (int, map[str
 		CatPicFileType: picFileType,
 	}
 
+	// Save to database
 	if err = cpo.Create(); err != nil {
 		return http.StatusBadRequest, map[string]interface{}{
 			"status_code":    http.StatusBadRequest,
@@ -67,6 +67,7 @@ func (svc Service) CreateCatPicService(file *multipart.FileHeader) (int, map[str
 
 func (svc Service) GetCatPicByIDService(catPicId string) (int, map[string]interface{}, error) {
 	var cpo model.CatPics
+	//fetches the cat pic by its ID
 	if err := cpo.GetByID(catPicId); err != nil {
 		return http.StatusBadRequest, map[string]interface{}{
 			"status_code":    http.StatusBadRequest,
@@ -108,6 +109,7 @@ func (svc Service) GetCatPicsListService(pageNo, pageSize int) (int, map[string]
 
 func (svc Service) UpdateCatPicService(file *multipart.FileHeader, catPicID string) (int, map[string]interface{}, error) {
 	var cpo model.CatPics
+	//fetches the cat pic by its ID in order to update the image object
 	if err := cpo.GetByID(catPicID); err != nil {
 		return http.StatusBadRequest, map[string]interface{}{
 			"status_code":    http.StatusBadRequest,
@@ -116,6 +118,7 @@ func (svc Service) UpdateCatPicService(file *multipart.FileHeader, catPicID stri
 		}, err
 	}
 
+	// Opens the received file
 	src, err := file.Open()
 	if err != nil {
 		return http.StatusInternalServerError, map[string]interface{}{
@@ -126,7 +129,7 @@ func (svc Service) UpdateCatPicService(file *multipart.FileHeader, catPicID stri
 	}
 	defer src.Close()
 
-	// Read the image file into a byte array
+	// Reads the new image file into a byte array
 	buffer := make([]byte, file.Size)
 	_, err = src.Read(buffer)
 	if err != nil {
@@ -142,6 +145,7 @@ func (svc Service) UpdateCatPicService(file *multipart.FileHeader, catPicID stri
 		picFileType = "png"
 	}
 
+	// Updates the old image with new image, validation of same filename(like any other file) not allowed exists here
 	err = cpo.Update(map[string]interface{}{
 		"cat_pic_file_name": file.Filename,
 		"cat_pic_file_type": picFileType,
@@ -164,6 +168,7 @@ func (svc Service) UpdateCatPicService(file *multipart.FileHeader, catPicID stri
 
 func (svc Service) DeleteCatPicService(catPicID string) (int, map[string]interface{}, error) {
 	var cpo model.CatPics
+	//fetches the cat pic by its ID in order to delete the image object
 	if err := cpo.GetByID(catPicID); err != nil {
 		return http.StatusBadRequest, map[string]interface{}{
 			"status_code":    http.StatusBadRequest,
@@ -172,6 +177,8 @@ func (svc Service) DeleteCatPicService(catPicID string) (int, map[string]interfa
 		}, err
 	}
 	deletedId := cpo.ID
+
+	//deletes the image from table
 	err := cpo.DeleteById()
 	if err != nil {
 		return http.StatusBadRequest, map[string]interface{}{

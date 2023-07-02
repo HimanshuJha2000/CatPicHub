@@ -41,7 +41,3 @@ func connect(database config.Database) *gorm.DB {
 
 	return db
 }
-
-func TestClient() *gorm.DB {
-	return clientTest
-}

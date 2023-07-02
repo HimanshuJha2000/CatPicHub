@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-// Database : struct to hold live / test Database config
+// Database : struct to hold live Database config
 type Database struct {
 	Dialect  string `toml:"dialect"`
 	Protocol string `toml:"protocol"`
@@ -24,9 +24,7 @@ func (c Database) URL() string {
 
 	c.Username = os.Getenv("DATABASE_USERNAME")
 	c.Password = os.Getenv("DATABASE_PASSWORD")
-	// charset=utf8: uses utf8 character set data format
-	// parseTime=true: changes the output type of DATE and DATETIME values to time.Time instead of []byte / strings
-	// loc=Local: Sets the location for time.Time values (when using parseTime=true). "Local" sets the system's location
+
 	return fmt.Sprintf(
 		PostgresqlConnectionDSNFormat,
 		"postgresql",

@@ -16,7 +16,7 @@ type AppConfig struct {
 	Database    Database    `toml:"database"`
 }
 
-// LoadConfig will load the configuration available in the config directory
+// LoadConfig will load the configuration values available in the config directory
 func LoadConfig(env string) {
 	log.Println("Loading environment for " + env)
 	config.Application.Environment = env

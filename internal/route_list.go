@@ -11,19 +11,17 @@ func SetupRouter() *gin.Engine {
 
 	r := gin.Default()
 
+	// Setting up username and password from environment
 	username := os.Getenv("CATPICHUB_USERNAME")
 	password := os.Getenv("CATPICHUB_PASSWORD")
 
 	// Middleware for basic authentication
 	r.Use(func(ctx *gin.Context) {
-		// Call gin.BasicAuth middleware
 		gin.BasicAuth(gin.Accounts{
 			username: password,
 		})(ctx)
-
 		// Check if the response status is 401 Unauthorized
 		if ctx.Writer.Status() == http.StatusUnauthorized {
-			// Return a JSON response with an error message
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"error":   "Unauthorized",
 				"message": "Wrong username and password is passed!",

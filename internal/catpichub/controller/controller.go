@@ -27,6 +27,7 @@ func (cpc *CatPicHubController) CreateCatPicController(ctx *gin.Context) {
 		return
 	}
 
+	// Validation : If file other than image defined format is sent
 	if !strings.HasSuffix(file.Filename, ".png") && !strings.HasSuffix(file.Filename, ".jpg") && !strings.HasSuffix(file.Filename, ".jpeg") {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":           "Provided file is not an image file",
@@ -71,6 +72,8 @@ func (cpc *CatPicHubController) GetCatPicByIDController(ctx *gin.Context) {
 func (cpc *CatPicHubController) GetCatPicListController(ctx *gin.Context) {
 
 	pageNo := ctx.Params.ByName("page_no")
+
+	// Validation : If pageNo hasn't been sent or sent as something other than a number
 	if pageNo == "" || utils.IsSpecialCharacter(rune(pageNo[0])) || utils.IsAlphabet(rune(pageNo[0])) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":           "Page number is missing/invalid for fetching list of images",
@@ -80,6 +83,8 @@ func (cpc *CatPicHubController) GetCatPicListController(ctx *gin.Context) {
 	}
 
 	pageSize := ctx.Params.ByName("page_size")
+
+	// Validation : If pageSize hasn't been sent or sent as something other than a number
 	if pageSize == "" || utils.IsSpecialCharacter(rune(pageSize[0])) || utils.IsAlphabet(rune(pageSize[0])) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":           "Page size is missing/invalid for fetching list of images",
@@ -118,6 +123,15 @@ func (cpc *CatPicHubController) UpdateCatPicController(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error":           "Image file is required",
 			"internal_error ": err.Error(),
+		})
+		return
+	}
+
+	// Validation : If file other than image defined format is sent
+	if !strings.HasSuffix(file.Filename, ".png") && !strings.HasSuffix(file.Filename, ".jpg") && !strings.HasSuffix(file.Filename, ".jpeg") {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error":           "Provided file is not an image file",
+			"internal_error ": "Images of only .png, .jpg and .jpeg type is supported",
 		})
 		return
 	}
