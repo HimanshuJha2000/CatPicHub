@@ -13,7 +13,7 @@ func upCatPics(tx *sql.Tx) error {
 	// This code is executed when the migration is applied.
 	_, err := tx.Exec(`CREATE TABLE cat_pics (
  		id varchar(6) NOT NULL UNIQUE,
-		cat_pic_file_name varchar(200) NOT NULL,
+		cat_pic_file_name varchar(200) NOT NULL UNIQUE,
 		cat_pic_data bytea,
 		cat_pic_file_type varchar(10) NOT NULL,
 		PRIMARY KEY(id)
