@@ -1,0 +1,31 @@
+version: '2'
+services:
+
+  postgres:
+    image: postgres:10
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: catpichub
+      POSTGRES_PASSWORD: catpichub@1234
+      POSTGRES_DB: catpichub
+    volumes:
+      - ./create_local_db.sql:/docker-entrypoint-initdb.d
+    networks:
+      - api_default
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    networks:
+      - api_default
+    ports:
+      - '8080:8080'
+    environment:
+      WAIT_HOSTS: postgres:5432
+
+networks:
+  api_default:
+    external: false
