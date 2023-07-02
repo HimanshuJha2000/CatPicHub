@@ -4,7 +4,7 @@
 
 * PostgreSQL@latest
 * Go 1.20 amd64 version
-* Gin HTTP web framework (available in Golang
+* Gin HTTP web framework (available in Golang)
 * GORM (ORM library for Golang)
 
 
