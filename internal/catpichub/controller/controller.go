@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type CatPicHubController struct {
@@ -23,6 +24,15 @@ func (cpc *CatPicHubController) CreateCatPicController(ctx *gin.Context) {
 			"error":           "Image file is required",
 			"internal_error ": err.Error(),
 		})
+		return
+	}
+
+	if !strings.HasSuffix(file.Filename, ".png") && !strings.HasSuffix(file.Filename, ".jpg") && !strings.HasSuffix(file.Filename, ".jpeg") {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error":           "Provided file is not an image file",
+			"internal_error ": "Images of only .png, .jpg and .jpeg type is supported",
+		})
+		return
 	}
 
 	statusCode, result, err := cpc.CatPicHubService.CreateCatPicService(file)
