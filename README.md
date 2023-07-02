@@ -1,6 +1,6 @@
-## CatPicHub
+# CatPicHub
 
-### Requirements
+## Requirements
 
 * PostgreSQL@latest
 * Go 1.20 amd64 version
@@ -9,8 +9,9 @@
 
 
 
-### How to Run
+## How to Run
 
+### Running locally
 * Set up the database :
 ```
 CREATE DATABASE catpichub;
@@ -20,16 +21,57 @@ ALTER DATABASE catpichub OWNER TO catpichub;
 GRANT ALL PRIVILEGES ON DATABASE catpichub TO catpichub;
 ```
 
+* Paste these configs in ./config/env.dev.toml
+```
+[application]
+    app_name = "reminders"
+    listen_port = 8080
+    listen_ip = "127.0.0.1"
+
+[database]
+    dialect = "postgres"
+    host = "localhost"
+    port = 5432
+    protocol = "tcp"
+    name = "catpichub"
+```
+
 * Run migrations
 ```
 go build -o goose-custom ./migrations/*.go
 ./goose-custom up
 ```
+* Start the service
+```
+go build -o catpichub ./cmd/main.go
+./catpichub
+```
 
+### Running via Docker
 
-### [Postman Collection](https://api.postman.com/collections/16960428-0e10276e-0960-4ffe-9f93-26d39747cb7b?access_key=PMAT-01GN42TH8Q6NE1CF37TZNTR4ZY)
+* Paste these configs in ./config/env.dev.toml
+```
+[application]
+    app_name = "reminders"
+    listen_port = 8080
+    listen_ip = "0.0.0.0"
 
-###
+[database]
+    dialect = "postgres"
+    host = "postgres"
+    port = 5432
+    protocol = "tcp"
+    name = "catpichub"
+```
+* Run following commands
+```
+ docker-compose build 
+ docker-compose up
+```
+
+### [Postman Collection](https://api.postman.com/collections/27596999-4763bc11-1cb5-4166-a91b-8abfc8bf8ba8?access_key=PMAT-01H4BVR33NKXM8DNG34ZEA4A38)
+
+### [API Documentation](https://documenter.getpostman.com/view/27596999/2s93zCYfPw#aa26aaff-3be9-4e13-9462-da6f6eb7b492)
 
 
 

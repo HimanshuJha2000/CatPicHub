@@ -6,7 +6,7 @@ import (
 
 type CatPics struct {
 	ID             string `json:"id" gorm:"primaryKey"`
-	CatPicFileName string `json:"cat_pic_file_name" gorm:"unique;not null"`
+	CatPicFileName string `json:"cat_pic_file_name" gorm:"not null"`
 	CatPicData     []byte `json:"cat_pic_data" gorm:"type:BLOB"`
 	CatPicFileType string `json:"cat_pic_file_type"`
 }

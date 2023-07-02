@@ -102,7 +102,7 @@ func (svc Service) GetCatPicsListService(pageNo, pageSize int) (int, map[string]
 
 	return http.StatusOK, map[string]interface{}{
 		"images":  catPicsArray,
-		"success": "Cat picture uploaded successfully",
+		"success": "List of cat pictures fetched successfully",
 	}, nil
 }
 
